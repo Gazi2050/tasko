@@ -2,9 +2,9 @@ import { FaFileMedical } from "react-icons/fa";
 import DropDownGroup from "./DropDownGroup";
 const BoardHeader = () => {
     return (
-        <div className="flex justify-between max-w-7xl mx-auto">
+        <div className="flex justify-between items-center max-w-7xl mx-auto">
             <div>
-                <p>All Task List</p>
+                <p className="text-2xl font-semibold">All Task List</p>
             </div>
             <div className="flex  gap-3 items-center">
                 <DropDownGroup />
