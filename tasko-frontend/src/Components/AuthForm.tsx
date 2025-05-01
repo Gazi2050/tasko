@@ -2,6 +2,8 @@
 
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { signupImg } from "../Constants/data"
+import { FaEye, FaEyeSlash } from "react-icons/fa"
+import { useState } from "react"
 
 type AuthType = "login" | "signup"
 
@@ -24,11 +26,17 @@ const AuthForm = ({ auth }: AuthFormProps) => {
         formState: { errors },
     } = useForm<FormValues>()
 
+    const [showPassword, setShowPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
+    const togglePasswordVisibility = () => setShowPassword(prev => !prev)
+    const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(prev => !prev)
+
+    const passwordValue = watch("password")
+
     const onSubmit: SubmitHandler<FormValues> = (data) => {
         console.log(data)
     }
-
-    const passwordValue = watch("password")
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4 py-10">
@@ -83,38 +91,25 @@ const AuthForm = ({ auth }: AuthFormProps) => {
                                 <label className="block mb-1 text-sm font-medium">Password</label>
                                 <div className="relative">
                                     <input
-                                        type="password"
+                                        type={showPassword ? "text" : "password"}
                                         placeholder="************"
                                         className="w-full bg-white shadow-sm rounded border border-gray-300 p-3 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-400"
                                         {...register("password", {
                                             required: "Password is required",
                                             pattern: {
                                                 value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%&]).{8,}$/,
-                                                message: "Password must be 8+ chars, include one letter, one number, and one special (@#$%&)",
+                                                message:
+                                                    "Password must be 8+ chars, include one letter, one number, and one special (@#$%&)",
                                             },
                                         })}
                                     />
                                     <button
                                         type="button"
+                                        onClick={togglePasswordVisibility}
                                         className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
                                         aria-label="Toggle password visibility"
                                     >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        >
-                                            <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
-                                            <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
-                                            <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
-                                            <line x1="2" x2="22" y1="2" y2="22"></line>
-                                        </svg>
+                                        {showPassword ? <FaEyeSlash /> : <FaEye />}
                                     </button>
                                 </div>
                                 {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>}
@@ -125,35 +120,22 @@ const AuthForm = ({ auth }: AuthFormProps) => {
                                     <label className="block mb-1 text-sm font-medium">Confirm Password</label>
                                     <div className="relative">
                                         <input
-                                            type="password"
+                                            type={showConfirmPassword ? "text" : "password"}
                                             placeholder="Retype password"
                                             className="w-full bg-white shadow-sm rounded border border-gray-300 p-3 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-400"
                                             {...register("confirmPassword", {
                                                 required: "Confirm Password is required",
-                                                validate: (value) => value === passwordValue || "Passwords do not match",
+                                                validate: (value) =>
+                                                    value === passwordValue || "Passwords do not match",
                                             })}
                                         />
                                         <button
                                             type="button"
+                                            onClick={toggleConfirmPasswordVisibility}
                                             className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-                                            aria-label="Toggle password visibility"
+                                            aria-label="Toggle confirm password visibility"
                                         >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="16"
-                                                height="16"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            >
-                                                <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
-                                                <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
-                                                <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
-                                                <line x1="2" x2="22" y1="2" y2="22"></line>
-                                            </svg>
+                                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                                         </button>
                                     </div>
                                     {errors.confirmPassword && (
