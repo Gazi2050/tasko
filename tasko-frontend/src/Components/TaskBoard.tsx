@@ -1,8 +1,9 @@
+import BoardHeader from "./BoardHeader";
 
 const TaskBoard = () => {
     return (
         <div>
-            <p>THis is task Board</p>
+            <BoardHeader />
         </div>
     );
 };
