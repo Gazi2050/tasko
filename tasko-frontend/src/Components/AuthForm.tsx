@@ -1,9 +1,10 @@
 "use client"
 
 import { useForm, type SubmitHandler } from "react-hook-form"
-import { signupImg } from "../Constants/data"
+import { loginImg, signupImg } from "../Constants/data"
 import { FaEye, FaEyeSlash } from "react-icons/fa"
 import { useState } from "react"
+import { Link } from "react-router"
 
 type AuthType = "login" | "signup"
 
@@ -18,6 +19,14 @@ type AuthFormProps = {
     auth: AuthType
 }
 
+const passwordValidation = {
+    required: "Password is required",
+    pattern: {
+        value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%&]).{8,}$/,
+        message: "Password must be 8+ chars, include one letter, one number, and one special (@#$%&)",
+    },
+}
+
 const AuthForm = ({ auth }: AuthFormProps) => {
     const {
         register,
@@ -26,11 +35,11 @@ const AuthForm = ({ auth }: AuthFormProps) => {
         formState: { errors },
     } = useForm<FormValues>()
 
-    const [showPassword, setShowPassword] = useState(false)
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+    const [passwordVisibility, setPasswordVisibility] = useState({ password: false, confirmPassword: false })
 
-    const togglePasswordVisibility = () => setShowPassword(prev => !prev)
-    const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(prev => !prev)
+    const togglePasswordVisibility = (field: "password" | "confirmPassword") => {
+        setPasswordVisibility(prev => ({ ...prev, [field]: !prev[field] }))
+    }
 
     const passwordValue = watch("password")
 
@@ -44,7 +53,7 @@ const AuthForm = ({ auth }: AuthFormProps) => {
                 {/* Left image */}
                 <div className="hidden lg:w-1/2 bg-gradient-to-b from-emerald-900 to-emerald-700 lg:block">
                     <img
-                        src={signupImg}
+                        src={auth === 'signup' ? signupImg : loginImg}
                         alt="Signup Illustration"
                         className="h-full w-full object-cover"
                     />
@@ -91,25 +100,18 @@ const AuthForm = ({ auth }: AuthFormProps) => {
                                 <label className="block mb-1 text-sm font-medium">Password</label>
                                 <div className="relative">
                                     <input
-                                        type={showPassword ? "text" : "password"}
+                                        type={passwordVisibility.password ? "text" : "password"}
                                         placeholder="************"
                                         className="w-full bg-white shadow-sm rounded border border-gray-300 p-3 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-400"
-                                        {...register("password", {
-                                            required: "Password is required",
-                                            pattern: {
-                                                value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%&]).{8,}$/,
-                                                message:
-                                                    "Password must be 8+ chars, include one letter, one number, and one special (@#$%&)",
-                                            },
-                                        })}
+                                        {...register("password", passwordValidation)}
                                     />
                                     <button
                                         type="button"
-                                        onClick={togglePasswordVisibility}
+                                        onClick={() => togglePasswordVisibility("password")}
                                         className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
                                         aria-label="Toggle password visibility"
                                     >
-                                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                        {passwordVisibility.password ? <FaEyeSlash /> : <FaEye />}
                                     </button>
                                 </div>
                                 {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>}
@@ -120,7 +122,7 @@ const AuthForm = ({ auth }: AuthFormProps) => {
                                     <label className="block mb-1 text-sm font-medium">Confirm Password</label>
                                     <div className="relative">
                                         <input
-                                            type={showConfirmPassword ? "text" : "password"}
+                                            type={passwordVisibility.confirmPassword ? "text" : "password"}
                                             placeholder="Retype password"
                                             className="w-full bg-white shadow-sm rounded border border-gray-300 p-3 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-400"
                                             {...register("confirmPassword", {
@@ -131,11 +133,11 @@ const AuthForm = ({ auth }: AuthFormProps) => {
                                         />
                                         <button
                                             type="button"
-                                            onClick={toggleConfirmPasswordVisibility}
+                                            onClick={() => togglePasswordVisibility("confirmPassword")}
                                             className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
                                             aria-label="Toggle confirm password visibility"
                                         >
-                                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                                            {passwordVisibility.confirmPassword ? <FaEyeSlash /> : <FaEye />}
                                         </button>
                                     </div>
                                     {errors.confirmPassword && (
@@ -146,7 +148,7 @@ const AuthForm = ({ auth }: AuthFormProps) => {
 
                             <button
                                 type="submit"
-                                className="w-full rounded bg-emerald-400 py-3 font-semibold text-white hover:bg-emerald-500 transition"
+                                className="w-full rounded bg-emerald-400 py-3 font-semibold text-black hover:bg-emerald-500 transition"
                             >
                                 {auth === "signup" ? "Sign Up" : "Login"}
                             </button>
@@ -161,16 +163,16 @@ const AuthForm = ({ auth }: AuthFormProps) => {
                                 {auth === "signup" ? (
                                     <p className="text-gray-500">
                                         Already have an account?{" "}
-                                        <a href="#" className="font-semibold text-black hover:underline">
+                                        <Link to='/login' className="font-semibold text-black hover:underline">
                                             Log In
-                                        </a>
+                                        </Link>
                                     </p>
                                 ) : (
                                     <p className="text-gray-500">
                                         Don't have an account?{" "}
-                                        <a href="#" className="font-semibold text-black hover:underline">
+                                        <Link to='/signup' className="font-semibold text-black hover:underline">
                                             Sign Up
-                                        </a>
+                                        </Link>
                                     </p>
                                 )}
                             </div>
