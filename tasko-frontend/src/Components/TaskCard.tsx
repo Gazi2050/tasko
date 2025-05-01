@@ -1,13 +1,14 @@
 import { FaCalendarAlt, FaTrashAlt } from "react-icons/fa";
 import { HiMiniSwatch } from "react-icons/hi2";
+import { Link } from "react-router";
 
 const TaskCard = () => {
     return (
-        <div className="max-w-sm mx-auto border border-[#E1E1E1] bg-white shadow-sm rounded-lg p-4 flex flex-col space-y-2">
-            {/* Header Section */}
+        <Link to='/details' className="max-w-sm mx-auto border border-[#E1E1E1] bg-white shadow-sm rounded-lg p-4 flex flex-col space-y-2">
+
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                    {/* Icon Circle */}
+
                     <div className="w-8 h-8 bg-[#60E5AE] rounded-full flex items-center justify-center">
                         <span className="text-black">
                             <HiMiniSwatch />
@@ -15,16 +16,16 @@ const TaskCard = () => {
                     </div>
                     <h2 className="text-lg font-semibold text-gray-800">Art and Craft</h2>
                 </div>
-                {/* Trash Icon */}
-                <FaTrashAlt className="text-red-500 cursor-pointer" />
+
+                <div className="p-3 hover:bg-gray-500/10 rounded-lg duration-300">
+                    <FaTrashAlt className="text-red-500 cursor-pointer" />
+                </div>
             </div>
 
-            {/* Description */}
             <p className="text-sm text-gray-600">
                 Select the role that you want to candidates for and upload your job description.
             </p>
 
-            {/* Footer Section */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                     <FaCalendarAlt className="text-gray-500" />
@@ -35,7 +36,7 @@ const TaskCard = () => {
                     <span className="text-sm text-purple-500 font-medium">Pending</span>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 };
 
