@@ -13,10 +13,8 @@ const CategoryDropdown = () => {
         'Meditation',
     ];
 
-
-
     return (
-        <div className="flex space-x-4 p-4">
+        <div className="flex space-x-4 p-4 cursor-pointer">
             <div className="relative">
                 <button
                     onClick={() => setIsCategoryOpen(!isCategoryOpen)}

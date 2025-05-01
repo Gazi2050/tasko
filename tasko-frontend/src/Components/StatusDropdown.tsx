@@ -12,7 +12,7 @@ const StatusDropdown = () => {
     ];
     return (
         <div>
-            <div className="relative">
+            <div className="relative cursor-pointer">
                 <button
                     onClick={() => setIsStatusOpen(!isStatusOpen)}
                     className="bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm font-medium text-gray-700 flex items-center justify-between w-48"
